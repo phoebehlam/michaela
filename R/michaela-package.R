@@ -1,0 +1,64 @@
+#' m  i c  h  a  e  l  a
+#'
+#' package for converting various metrics to r\cr
+#' michaela is beta. please report any bugs\cr
+#' minimalist function names aimed to allow users with no r knowledge to use\cr
+#' all functions in format of "from.to" \cr
+#' e.g., converting regression b and se to r would be bse.r()\cr
+#' e.g., converting cohen's d to r would be d.r()
+#'
+#' @section auxillary stuff:
+#' ci.se(): standard error from confidence interval \cr
+#' sediff(): difference between standard errors computed using upper ci and lower ci \cr
+#' se.sd(): standard error from standard deviation\cr
+#' median.mean(): estimate mean from median, minimum, and maximum\cr
+#' median.sd(): estimate sd from median, minimum, and maximum
+#'
+#'
+#' @section correlational designs:
+#' r.z(): r to fisher's z \cr
+#' z.r(): fisher's z to r \cr
+#' zvar(): variance of z \cr
+#' rsq.r(): r squared to r \cr
+#' bse.t(): regression coefficient and standard error to t-statistics \cr
+#' t.r(): t-statistics to r \cr
+#' bse.r(): regression coefficient and standard error to r \cr
+#' bci.r(): regression coefficient and confidence interval to r \cr
+#' expb.r(): exponentiated logistic regression coefficient and confidence interval to r \cr
+#' percent.r(): percent change derived from transformed exponentiated regression coefficients and confidence interval to r \cr
+#' f.r(): f-statistics (df1=1) to r \cr
+#' regp.r(): regression p-values (or other t distribution-based p-values) to r
+#'
+#'
+#' @section group difference designs:
+#' or.r(): odd ratio to r \cr
+#' rr.r(): risk ratio to r \cr
+#' meansd.d(): means and standard deviations of two groups to cohen's d\cr
+#' meanse.d(): means and standard errors of two groups to cohen's d\cr
+#' meanci.d(): means and confidence intervals of two groups to cohen's d\cr
+#' meansd.r(): means and standard deviations of two groups to r\cr
+#' meanse.r(): means and standard errors of two groups to r\cr
+#' meanci.r(): means and confidence intervals of two groups to r\cr
+#' d.t(): cohen's d to t-statistics\cr
+#' d.r(): cohen's d to r \cr
+#' median.r(): medians, minimums, and maximums to r
+#'
+#' @section dichotomized/extreme group designs:
+#' when using the following functions, please follow \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky's recommendations (2014)}.\cr
+#' dicho.d.r(): cohen's d from dichotomizing/extreme group design to r\cr
+#' dicho.d.z(): cohen's d from dichotomizing/extreme group design to fisher's z\cr
+#' dichod.zvar(): variance of z from a cohen's d derived from dichotomizing/extreme group design\cr
+#' dicho.meansd.r(): means and sds from dichotomizing/extreme group design to r\cr
+#' dicho.meansd.z(): means and sd from dichotomizing/extreme group design to fisher's z\cr
+#' dicho.meansd.zvar(): variance of z converted from dichotomizing/extreme group design mean and sd\cr
+#' dicho.t.r(): t-statistics from dichotomizing/extreme group design to r\cr
+#' dicho.t.z(): t-statistics from dichotomizing/extreme group design to fisher's z\cr
+#' dicho.t.zvar(): variance of z derived from dichotomizing/extreme group design t-statistics\cr
+#' dicho.meanci.r(): mean and ci from dichotomizing/extreme group design to r\cr
+#' dicho.meanci.z(): mean and ci from dichotomizing/extreme group design to fisher's z\cr
+#' dicho.meanci.zvar(): variance of z derived from dichotomizing/extreme group design mean and ci\cr
+#'
+#'
+#' @docType package
+#' @name michaela
+NULL
