@@ -26,3 +26,9 @@
 \description{
 estimate correlation coefficient from median, minimum and max. see \href{https://onlinelibrary.wiley.com/doi/full/10.4073/cmpn.2016.3}{polanin & snilstveit, 2016}
 }
+\examples{
+median.r(61, 2, -11, 516, -10, 2159, 26, 52)
+dat \%>\% mutate (r_from_medianminmax = median.r(stress_median, control_median, stress_minimum, control_minimum2, stress_maximum, control_maximum, stress_n, control_n)) -> dat
+
+
+}

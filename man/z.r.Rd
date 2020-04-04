@@ -16,7 +16,7 @@ convert fisher's z to correlation coefficient
 single value
 z.r(.3)
 
-dplyr example: dataset named "dat" with a column of correlation coefficient values named "fishz", create a new var called "r"
+dplyr examples: dataset named "dat" with a column of correlation coefficient values named "fishz", create a new var called "r"
 dat \%>\% mutate (r = z.r(fishz)) -> dat
 
 }

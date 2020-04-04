@@ -17,7 +17,7 @@ correlation coefficient can be either bivariate pearson's r or partial correlati
 single value
 r.z(.3)
 
-dplyr example: dataset named "dat" with a column of correlation coefficient values named "corr", create a new var called "z"
+dplyr examples: dataset named "dat" with a column of correlation coefficient values named "corr", create a new var called "z"
 dat \%>\% mutate (z = r.z(corr)) -> dat
 
 }

@@ -24,5 +24,6 @@ means and standard error of two groups to correlation coefficient
 }
 \examples{
 meanse.r(15.1, 13.2, .64, .164, 25, 45)
+dat \%>\% mutate (r_from_meanse = meanse.r(stress_mean, control_mean, stress_se, control_se, stress_n, control_n)) -> dat
 
 }

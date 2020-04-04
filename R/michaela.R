@@ -1,5 +1,3 @@
-
-
 #' r to z
 #'
 #' convert correlation coefficient to fisher's z\cr
@@ -11,7 +9,7 @@
 #' single value
 #' r.z(.3)
 #'
-#' dplyr example: dataset named "dat" with a column of correlation coefficient values named "corr", create a new var called "z"
+#' dplyr examples: dataset named "dat" with a column of correlation coefficient values named "corr", create a new var called "z"
 #' dat %>% mutate (z = r.z(corr)) -> dat
 #'
 #' @export
@@ -30,7 +28,7 @@ r.z <- function (r) {
 #' single value
 #' z.r(.3)
 #'
-#' dplyr example: dataset named "dat" with a column of correlation coefficient values named "fishz", create a new var called "r"
+#' dplyr examples: dataset named "dat" with a column of correlation coefficient values named "fishz", create a new var called "r"
 #' dat %>% mutate (r = z.r(fishz)) -> dat
 #'
 #' @export
@@ -635,7 +633,7 @@ d.r <- function (d, n1, n2, dir) {
 #'
 #' @examples
 #' meansd.r(15.1, 13.2, 2.3, 1.1, 25, 45)
-#' dat %>% mutate (r_from_meansd = meansd.r(mean1, mean2, sd1, sd2, n1, n2)) -> dat
+#' dat %>% mutate (r_from_meansd = meansd.r(stress_mean, control_mean, stress_sd, control_sd, stress_n, control_n)) -> dat
 #'
 #' @export
 meansd.r <- function (m1, m2, sd1, sd2, n1, n2) {
@@ -658,6 +656,7 @@ meansd.r <- function (m1, m2, sd1, sd2, n1, n2) {
 #'
 #' @examples
 #' meanse.r(15.1, 13.2, .64, .164, 25, 45)
+#' dat %>% mutate (r_from_meanse = meanse.r(stress_mean, control_mean, stress_se, control_se, stress_n, control_n)) -> dat
 #'
 #' @export
 meanse.r <- function (m1, m2, se1, se2, n1, n2, k) {
@@ -674,12 +673,17 @@ meanse.r <- function (m1, m2, se1, se2, n1, n2, k) {
 #'
 #' @param m1 mean of group 1
 #' @param m2 mean of group 2
-#' @param cil lower bound of 95 confidence interval
-#' @param ciu upper bound of 95 confidence interval
+#' @param cil1 lower bound of 95 confidence interval
+#' @param ciu1 upper bound of 95 confidence interval
+#' @param cil2 lower bound of 95 confidence interval
+#' @param ciu2 upper bound of 95 confidence interval
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
 #' @param k total number of predictors (k=0 for raw)
 #'
+#' @examples
+#' meanci.d(35, 28, 30, 40, 26, 30, 26, 54, 0, "ciu")
+#' dat %>% mutate (d_from_meanci = meanci.r(stress_mean, control_mean, stress_cil, stress_ciu, control_cil, control_ciu, stress_n, control_n, num_predictors))-> dat
 #'
 #' @export
 meanci.d <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k) {
@@ -689,7 +693,6 @@ meanci.d <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k) {
   d = meansd.d(m1, m2, se.sd(se1_ciu, n1), se.sd(se2_ciu, n2))
 
   return (d)
-
 }
 
 #' mean and ci to r
@@ -698,12 +701,17 @@ meanci.d <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k) {
 #'
 #' @param m1 mean of group 1
 #' @param m2 mean of group 2
-#' @param cil lower bound of 95 confidence interval
-#' @param ciu upper bound of 95 confidence interval
+#' @param cil1 lower bound of 95 confidence interval
+#' @param ciu1 upper bound of 95 confidence interval
+#' @param cil2 lower bound of 95 confidence interval
+#' @param ciu2 upper bound of 95 confidence interval
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
 #' @param k total number of predictors (k=0 for raw)
 #'
+#' @examples
+#' meanci.r(35, 28, 30, 40, 26, 30, 26, 54, 0, "ciu")
+#' dat %>% mutate (r_from_meanci = meanci.r(stress_mean, control_mean, stress_cil, stress_ciu, control_cil, control_ciu, stress_n, control_n, num_predictors))-> dat
 #'
 #' @export
 meanci.r <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, result = c("sediff", "cil", "ciu")){
@@ -747,8 +755,6 @@ meanci.r <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, result = c("sed
   }
 }
 
-
-
 #' median, minimum, and max to mean
 #'
 #' estimate mean from median, minimum and max. see \href{https://onlinelibrary.wiley.com/doi/full/10.4073/cmpn.2016.3}{polanin & snilstveit, 2016}
@@ -756,6 +762,10 @@ meanci.r <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, result = c("sed
 #' @param median the median
 #' @param min the minimum
 #' @param max the maximum
+#'
+#' @examples
+#' median.mean(61, -11, 516)
+#' dat %>% mutate (mean_from_medianminmax = median.mean(stress_median, stress_min, stress_max)) -> dat
 #'
 #' @export
 median.mean <- function (median, min, max) {
@@ -770,6 +780,10 @@ median.mean <- function (median, min, max) {
 #' @param median the median
 #' @param min the minimum
 #' @param max the maximum
+#'
+#' @examples
+#' median.sd(61, -11, 516)
+#' dat %>% mutate (sd_from_medianminmax = median.sd(stress_median, stress_min, stress_max)) -> dat
 #'
 #' @export
 median.sd <- function (median, min, max) {
@@ -792,6 +806,11 @@ median.sd <- function (median, min, max) {
 #' @param n1 the cell size for group 1
 #' @param n2 the cell size for group 2
 #'
+#' @examples
+#' median.r(61, 2, -11, 516, -10, 2159, 26, 52)
+#' dat %>% mutate (r_from_medianminmax = median.r(stress_median, control_median, stress_minimum, control_minimum2, stress_maximum, control_maximum, stress_n, control_n)) -> dat
+#'
+#'
 #' @export
 median.r <- function (median1, median2, min1, max1, min2, max2, n1, n2) {
 
@@ -803,6 +822,166 @@ median.r <- function (median1, median2, min1, max1, min2, max2, n1, n2) {
   r = meansd.r(mean1, mean2, sd1, sd2, n1, n2)
 
   return(r)
+}
+
+#' geometric mean and ci to se
+#'
+#' confidence interval around geometric mean to standard error of arithmetic mean of logged raw units
+#'
+#' @param geomean geometric mean
+#' @param cil lower bound of 95 confidence interval
+#' @param ciu upper bound of 95 confidence interval
+#' @param n cell size
+#' @param k total number of predictors (k=0 for raw)
+#'
+#' @examples
+#' geoci.se(.76, .41, 1.38, 57, 0)
+#'
+#' @export
+geoci.se <- function (geomean, cil, ciu, n, k, result = c("cil", "ciu")) {
+  if (missing(k)) {
+    stop ('hi, please specify k (the number of predictors); for raw means without covariates, enter k = 0')
+  } #k = 0 would give df = n - 1 for each mean
+
+  qt <- qt (.025, n- k -1, lower.tail = FALSE)
+
+  lnm = log (geomean)
+  lncil = log (cil)
+  lnciu = log (ciu)
+
+  se_ciu = (lnciu - lnm)/qt
+  se_cil = (lncil - lnm)/-qt
+
+  if(missing(result)) {
+    return (se_ciu)
+  } else if (result == "ciu") {
+    return (se_ciu)
+  } else if (result == "cil") {
+    return (se_cil)
+  }
+}
+
+#' geometric mean and ci to r
+#'
+#' geometric means and confidence interval of two groups to correlation coefficient
+#'
+#' @param m1 geometric mean of group 1
+#' @param m2 geometric mean of group 2
+#' @param cil1 lower bound of 95 confidence interval
+#' @param ciu1 upper bound of 95 confidence interval
+#' @param cil2 lower bound of 95 confidence interval
+#' @param ciu2 upper bound of 95 confidence interval
+#' @param n1 cell size of group 1
+#' @param n2 cell size of group 2
+#' @param k total number of predictors (k=0 for raw)
+#'
+#' @examples
+#' geo.r(.76, .75, .41, 1.38, .45, 1.26, 57, 355, 0)
+#'
+#' @export
+geo.r <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, result = c("sediff", "cil", "ciu")){
+  if (missing(k)) {
+    stop ('hi, please specify k-- the number of covariates these means are adjusted for, enter k = 0 if unadjusted.')
+  } #k = 0 would give df = n - 1 for each mean
+
+  se1_ciu = suppressWarnings(geoci.se(m1, cil1, ciu1, n1, k, result = "ciu"))
+  se1_cil = suppressWarnings(geoci.se(m1, cil1, ciu1, n1, k, result = "cil"))
+
+  se2_ciu = suppressWarnings(geoci.se(m2, cil2, ciu2, n2, k, result = "ciu"))
+  se2_cil = suppressWarnings(geoci.se(m2, cil2, ciu2, n2, k, result = "cil"))
+
+  lnm1 = log (m1)
+  lnm2 = log (m2)
+
+  if (missing (result)) {
+
+    r = meanse.r(lnm1, lnm2, se1_ciu, se2_ciu, n1, n2)
+
+    warning ('hi! please use result = "sediff" with this same function to check se discreapncies')
+    return (r)
+  } else if (result == "ciu") {
+    r = meanse.r(lnm1, lnm2, se1_ciu, se2_ciu, n1, n2)
+
+    warning ('hi! please use result = "sediff" with this same function to check se discreapncies')
+    return (r)
+  } else if (result == "cil") {
+    r = meanse.r(lnm1, lnm2, se1_cil, se2_cil, n1, n2)
+
+    warning ('hi! please use result = "sediff" with this same function to check se discreapncies')
+    return (r)
+  } else if (result == "sediff") {
+    diff1 = abs(se1_ciu - se1_cil)
+    diff2 = abs(se2_ciu - se2_cil)
+
+    diff1.df <- as.data.frame (table (diff1))
+    diff2.df <- as.data.frame (table (diff2))
+
+    list <- list ("se 1 diff" = diff1.df, "se 2 diff" = diff2.df)
+
+    return (list)
+  }
+}
+
+#' geometric mean and ci to d
+#'
+#' geometric means and confidence interval of two groups to cohen's d
+#'
+#' @param m1 geometric mean of group 1
+#' @param m2 geometric mean of group 2
+#' @param cil1 lower bound of 95 confidence interval
+#' @param ciu1 upper bound of 95 confidence interval
+#' @param cil2 lower bound of 95 confidence interval
+#' @param ciu2 upper bound of 95 confidence interval
+#' @param n1 cell size of group 1
+#' @param n2 cell size of group 2
+#' @param k total number of predictors (k=0 for raw)
+#'
+#' @examples
+#' geo.d(.76, .75, .41, 1.38, .45, 1.26, 57, 355, 0)
+#'
+#'
+#' @export
+geo.d <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, result = c("sediff", "cil", "ciu")){
+  if (missing(k)) {
+    stop ('hi, please specify k-- the number of covariates these means are adjusted for, enter k = 0 if unadjusted.')
+  } #k = 0 would give df = n - 1 for each mean
+
+  se1_ciu = suppressWarnings(geoci.se(m1, cil1, ciu1, n1, k, result = "ciu"))
+  se1_cil = suppressWarnings(geoci.se(m1, cil1, ciu1, n1, k, result = "cil"))
+
+  se2_ciu = suppressWarnings(geoci.se(m2, cil2, ciu2, n2, k, result = "ciu"))
+  se2_cil = suppressWarnings(geoci.se(m2, cil2, ciu2, n2, k, result = "cil"))
+
+  lnm1 = log (m1)
+  lnm2 = log (m2)
+
+  if (missing (result)) {
+
+    d = meanse.d(lnm1, lnm2, se1_ciu, se2_ciu, n1, n2)
+
+    warning ('hi! please use result = "sediff" with this same function to check se discreapncies')
+    return (d)
+  } else if (result == "ciu") {
+    d = meanse.d(lnm1, lnm2, se1_ciu, se2_ciu, n1, n2)
+
+    warning ('hi! please use result = "sediff" with this same function to check se discreapncies')
+    return (r)
+  } else if (result == "cil") {
+    d = meanse.d(lnm1, lnm2, se1_cil, se2_cil, n1, n2)
+
+    warning ('hi! please use result = "sediff" with this same function to check se discreapncies')
+    return (d)
+  } else if (result == "sediff") {
+    diff1 = abs(se1_ciu - se1_cil)
+    diff2 = abs(se2_ciu - se2_cil)
+
+    diff1.df <- as.data.frame (table (diff1))
+    diff2.df <- as.data.frame (table (diff2))
+
+    list <- list ("se 1 diff" = diff1.df, "se 2 diff" = diff2.df)
+
+    return (list)
+  }
 }
 
 

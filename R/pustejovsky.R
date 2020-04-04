@@ -10,7 +10,7 @@
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
 #' @param dir if cohen's d is in absolute value, provide the empirical direction:\cr
-#' +1 for positive associaitons (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
+#' +1 for positive associations (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
 #'
 #' @examples
 #' dicho.d.r(.80, 1/3, 1/3, 15, 15, -1)
@@ -42,9 +42,9 @@ dicho.d.r <- function (d, p1, p2, n1, n2, dir) {
 #' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
-#' @param k kth term for taylor series approximation (1 to 5)
+#' @param k kth term for taylor series approximation (enter 1 to 5)
 #' @param dir if cohen's d is in absolute value, provide the empirical direction:\cr
-#' +1 for positive associaitons (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
+#' +1 for positive associations (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
 #'
 #' @examples
 #' dicho.d.z(.80, 1/3, 1/3, 15, 15, 5, -1)
@@ -64,14 +64,13 @@ dicho.d.z <- function (d, p1, p2, n1, n2, k, dir) {
   r.eg = (b*d)/sqrt(d^2 + a) * dir
   r.pbs = d/sqrt(d^2+a) * dir
   
-  #taylor series approximation, term = 5
+  #taylor series approximation, up to 5
   k0 = ((log(1+r.pbs) - log(1-r.pbs))/2)*(((b-1)^0)*(r.pbs^0)/factorial(0))
   k1 = (1/(1-r.pbs^2)) * (((b-1)^1)*(r.pbs^1)/factorial(1))
   k2 = (2*r.pbs)/(1-r.pbs^2)^2 * (((b-1)^2)*(r.pbs^2)/factorial(2))
   k3 = (2+6*r.pbs^2)/(1-r.pbs^2)^3 * (((b-1)^3)*(r.pbs^3)/factorial(3))
   k4 = (24*r.pbs + 24*r.pbs^3)/(1-r.pbs^2)^4 * (((b-1)^4)*(r.pbs^4)/factorial(4))
   k5 = (24 + 240*r.pbs^2 + 120*r.pbs^4)/(1-r.pbs^2)^5 * (((b-1)^5)*(r.pbs^5)/factorial(5))
-  
   
   if (k==1) {
     z1 = k0+k1
@@ -166,12 +165,14 @@ dichod.zvar <- function (d, p1, p2, n1, n2, type = c("vd.ce", "vd.eg")) {
 #'
 #' @param m1 mean of group 1
 #' @param m2 mean of group 2
+#' @param sd1 standard deviation of group 1
+#' @param sd2 standard deviation of group 2
 #' @param p1 cutoff percentile for group 1 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
 #' @param dir if cohen's d is in absolute value, provide the empirical direction:\cr
-#' +1 for positive associaitons (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
+#' +1 for positive associations (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
 #'
 #' @examples
 #' dicho.meansd.r(15, 13, 1.4, 0.9, 15, 15, 1/3, 1/3)
@@ -188,7 +189,7 @@ dicho.meansd.r <- function (m1, m2, sd1, sd2, n1, n2, p1, p2) {
 #' means and sd from dichotomizing/extreme group design to fisher's z\cr
 #' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
 #' returns extreme group r (referred to as r (subscript eg) in pustejovsky paper) \cr
-#' for taylor series approximation, defaults 5th term
+#' for taylor series approximation, defaults 5th term (use dicho.d.z() if you'd like to adjust to lower term)
 #'
 #' @param m1 mean of group 1
 #' @param m2 mean of group 2
@@ -199,7 +200,7 @@ dicho.meansd.r <- function (m1, m2, sd1, sd2, n1, n2, p1, p2) {
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
 #' @param dir if cohen's d is in absolute value, provide the empirical direction:\cr
-#' +1 for positive associaitons (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
+#' +1 for positive associations (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
 #'
 #' @examples
 #' dicho.meansd.z(15, 13, 1.4, 0.9, 15, 15, 1/3, 1/3)
@@ -216,7 +217,10 @@ dicho.meansd.z <- function (m1, m2, sd1, sd2, n1, n2, p1, p2) {
 #' compute the variance of z from means and sds derived from dichotomizing/extreme group design d\cr
 #' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
 #'
-#' @param d cohen's d
+#' @param m1 mean of group 1
+#' @param m2 mean of group 2
+#' @param sd1 standard deviation of group 1
+#' @param sd2 standard deviation of group 2
 #' @param p1 cutoff percentile for group 1 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param n1 cell size of group 1
@@ -254,7 +258,7 @@ dicho.meansd.zvar <- function (m1, m2, sd1, sd2, n1, n2, p1, p2, type = c("vd.ce
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
 #' @param dir if cohen's d is in absolute value, provide the empirical direction:\cr
-#' +1 for positive associaitons (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
+#' +1 for positive associations (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
 #'
 #' @examples
 #' dicho.t.r(2.05, 1/3, 1/3, 15, 15, -1)
@@ -277,7 +281,7 @@ dicho.t.r <- function (t, totn, n1, n2, p1, p2, dir) {
 #'
 #' t-statistics from dichotomizing/extreme group design to fisher's z\cr
 #' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
-#' returns z based on taylor series approximation, defaults 5th term \cr
+#' returns z based on taylor series approximation, defaults 5th term (use dicho.d.z() if you'd like to adjust to lower term)\cr
 #' for unadjusted statistics only
 #'
 #' @param t t-statistics
@@ -287,7 +291,7 @@ dicho.t.r <- function (t, totn, n1, n2, p1, p2, dir) {
 #' @param p1 cutoff percentile for group 1 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
 #' @param dir if t-statistics is in absolute value, provide the empirical direction:\cr
-#' +1 for positive associaitons (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
+#' +1 for positive associations (e.g., group 1 - group 2 >= 0) and -1 for negative associations (e.g., group 1 - group 2 < 0)
 #'
 #' @examples
 #' dicho.t.z(2.05, 15+15, 15, 15, 1/3, 1/3, -1)
@@ -411,7 +415,7 @@ dicho.meanci.r <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, p1, p2, r
 #' means and confidence interval from dichotomizing/extreme group design to fisher's z\cr
 #' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
 #' returns extreme group r (referred to as r (subscript eg) in pustejovsky paper) \cr
-#' for taylor series approximation, defaults 5th term
+#' for taylor series approximation, defaults 5th term (use dicho.d.z() if you'd like to adjust to lower term)
 #'
 #' @param m1 mean of group 1
 #' @param m2 mean of group 2
@@ -513,3 +517,105 @@ dicho.meanci.zvar <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, p1, p2
   return(zvar)
   
 }
+
+#' means and se from dichotomizing/extreme group design to r
+#'
+#' means and standard errors from dichotomizing/extreme group design to correlation coefficient\cr
+#' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
+#' returns extreme group r (referred to as r subscript eg in pustejovsky paper)
+#'
+#' @param m1 mean of group 1
+#' @param m2 mean of group 2
+#' @param se1 standard error of group 1
+#' @param se2 standard error of group 2
+#' @param n1 cell size of group 1
+#' @param n2 cell size of group 2
+#' @param p1 cutoff percentile for group 1 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
+#' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
+#' 
+#' @examples
+#' dicho.meanse.r(1.1, 0.5, 0.6, 0.2, 10, 18, .25, .25)
+#' 
+#' @export
+dicho.meanse.r <- function (m1, m2, se1, se2, n1, n2, p1, p2) {
+  sd1 = se.sd(se1, n1)
+  sd2 = se.sd(se2, n2)
+  r = dicho.meansd.r (m1, m2, sd1, sd2, n1, n2, p1, p2)
+  
+  return (r)
+  
+}
+
+#' means and se from dichotomizing/extreme group design to z
+#'
+#' means and se from dichotomizing/extreme group design to fisher's z\cr
+#' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
+#' returns extreme group r (referred to as r (subscript eg) in pustejovsky paper) \cr
+#' for taylor series approximation, defaults 5th term (use dicho.d.z() if you'd like to adjust to lower term)
+#'
+#' @param m1 mean of group 1
+#' @param m2 mean of group 2
+#' @param se1 standard error of group 1
+#' @param se2 standard error of group 2
+#' @param n1 cell size of group 1
+#' @param n2 cell size of group 2
+#' @param p1 cutoff percentile for group 1 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
+#' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
+#'
+#' @examples
+#' dicho.meanse.z(1.1, 0.5, 0.6, 0.2, 10, 18, .25, .25)
+#'
+#' @export
+dicho.meanse.z <- function (m1, m2, se1, se2, n1, n2, p1, p2) {
+  sd1 = se.sd(se1, n1)
+  sd2 = se.sd(se2, n2)
+  z = dicho.meansd.z (m1, m2, sd1, sd2, n1, n2, p1, p2)
+  
+  return (z)
+  
+}
+
+#' variance of z converted from dichotomizing/extreme group design mean and se
+#'
+#' compute the variance of z from t-statistics derived from dichotomizing/extreme group design mean and se\cr
+#' see \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.} \cr
+#'
+#' @param m1 mean of group 1
+#' @param m2 mean of group 2
+#' @param se1 standard error of group 1
+#' @param se2 standard error of group 2
+#' @param n1 cell size of group 1
+#' @param n2 cell size of group 2
+#' @param p1 cutoff percentile for group 1 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
+#' @param p2 cutoff percentile for group 2 (sample-based, please see other formulas for population-based in pustejovsky, 2014)
+#' @param type select one from below, please read \href{https://psycnet.apa.org/buy/2013-34335-001}{pustejovsky, 2014. psychological methods.}for recommendations\cr
+#' there are situations where the "controlled experiment" formulas are recommended even for stats derived from dichotomize/extreme group designs\cr
+#' so please refer to his paper\itemize{
+#' \item"vd.ce" compute variance of d using the controlled experiment formulas
+#' \item"vd.eg" compute variance of d using the extreme group formulas}
+#' 
+#' @examples
+#' dicho.meanse.z(1.1, 0.5, 0.6, 0.2, 10, 18, .25, .25, "vd.ce")
+#'
+#'@export
+dicho.meanse.zvar <- function (m1, m2, se1, se2, n1, n2, p1, p2, type = c("vd.ce", "vd.eg")) {
+  sd1 = se.sd(se1, n1)
+  sd2 = se.sd(se2, n2)
+  
+  if (type == "vd.ce") {
+    zvar = dicho.meansd.zvar(m1, m2, sd1, sd2, n1, n2, p1, p2, type = "vd.ce")
+  } else if (type == "vd.eg") {
+    zvar = dicho.meansd.zvar(m1, m2, sd1, sd2, n1, n2, p1, p2, type = "vd.eg")
+  }
+  
+  return (zvar)
+}
+
+
+
+
+
+
+
+
+

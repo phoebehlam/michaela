@@ -24,6 +24,6 @@ means and standard deviations of two groups to correlation coefficient
 }
 \examples{
 meansd.r(15.1, 13.2, 2.3, 1.1, 25, 45)
-dat \%>\% mutate (r_from_meansd = meansd.r(mean1, mean2, sd1, sd2, n1, n2)) -> dat
+dat \%>\% mutate (r_from_meansd = meansd.r(stress_mean, control_mean, stress_sd, control_sd, stress_n, control_n)) -> dat
 
 }

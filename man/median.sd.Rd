@@ -16,3 +16,8 @@
 \description{
 estimate sd from median, minimum and max. see \href{https://onlinelibrary.wiley.com/doi/full/10.4073/cmpn.2016.3}{polanin & snilstveit, 2016}
 }
+\examples{
+median.sd(61, -11, 516)
+dat \%>\% mutate (sd_from_medianminmax = median.sd(stress_median, stress_min, stress_max)) -> dat
+
+}

@@ -16,3 +16,8 @@
 \description{
 estimate mean from median, minimum and max. see \href{https://onlinelibrary.wiley.com/doi/full/10.4073/cmpn.2016.3}{polanin & snilstveit, 2016}
 }
+\examples{
+median.mean(61, -11, 516)
+dat \%>\% mutate (mean_from_medianminmax = median.mean(stress_median, stress_min, stress_max)) -> dat
+
+}
