@@ -55,6 +55,22 @@ zvar <- function (n) {
   return (zvar)
 }
 
+
+#' variance of r
+#'
+#' compute the sampling variance of r (not recommended for meta)
+#'
+#' @param n sample size from which the r is derived
+#'
+#' @examples
+#' rvar(100)
+#'
+#' @export
+rvar <- function (r, n) {
+  rvar = ((1-r^2)^2)/(n-1)
+  return (rvar)
+}
+
 #' r squared to r
 #'
 #' compute the semi-partial correlation coefficient from delta r squared
@@ -237,6 +253,7 @@ bse.t <- function (b, se) {
   t = b/se
   return (t)
 }
+
 
 #' t to r
 #'
