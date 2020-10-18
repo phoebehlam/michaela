@@ -71,6 +71,41 @@ rvar <- function (r, n) {
   return (rvar)
 }
 
+#' variance of d
+#'
+#' compute the sampling variance of d (for distinct groups, i.e., between-individual designs only)
+#'
+#' @param d cohen's d estimate
+#' @param n1 cell size of group 1 for iv
+#' @param n2 cell size of group 2 for iv
+#'
+#' @examples
+#' dvar(d = .5, n1 = 34, n2=26)
+#'
+#' @export
+dvar <- function (d, n1, n2) {
+  dvar = ((n1+n2)/(n1*n2)) + (d^2/(2*(n1+n2)))
+  return (dvar)
+}
+
+#' variance of or
+#'
+#' compute the sampling variance of or (true or only)
+#'
+#' @param or cohen's d estimate
+#' @param n1 cell size of group 1 for iv
+#' @param n2 cell size of group 2 for iv
+#'
+#' @examples
+#' orvar()
+#'
+#' @export
+orvar <- function (a, b, c, d) {
+  orvar = ((n1+n2)/(n1*n2)) + (d^2/(2*(n1+n2)))
+  return (orvar)
+}
+
+
 #' r squared to r
 #'
 #' compute the semi-partial correlation coefficient from delta r squared
