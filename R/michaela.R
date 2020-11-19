@@ -88,6 +88,21 @@ dvar <- function (d, n1, n2) {
   return (dvar)
 }
 
+#' or to d
+#'
+#' convert odd ratio to cohen's d
+#'
+#' @param or odd ratio estimate
+#'
+#' @examples
+#' or.d(d)
+#'
+#' @export
+or.d <- function (or) {
+  d = log(or)*sqrt(3)/pi
+  return (d)
+}
+
 
 
 #' r squared to r
