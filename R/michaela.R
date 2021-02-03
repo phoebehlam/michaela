@@ -704,6 +704,7 @@ meansd.r <- function (m1, m2, sd1, sd2, n1, n2) {
 #' @param se2 standard error of group 2
 #' @param n1 cell size of group 1
 #' @param n2 cell size of group 2
+#' @param k total number of predictors (k=0 for raw)
 #'
 #' @examples
 #' meanse.r(15.1, 13.2, .64, .164, 25, 45)
