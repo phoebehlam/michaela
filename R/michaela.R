@@ -690,7 +690,7 @@ d.r <- function (d, n1, n2, dir) {
 meansd.r <- function (m1, m2, sd1, sd2, n1, n2) {
   d = meansd.d(m1, m2, sd1, sd2, n1, n2)
   t = d.t (d, n1, n2, 1, 1) #direction always one, because the d already comes with sign
-  r = t.r(t, n1+n2, 1, 1) #direction always one, because the d already comes with sign
+  r = t.r(t, n1+n2, 1, sign(t)) #using sign of t (which came from d)
   return (r)
 }
 

@@ -18,6 +18,8 @@ meanse.r(m1, m2, se1, se2, n1, n2, k)
 \item{n1}{cell size of group 1}
 
 \item{n2}{cell size of group 2}
+
+\item{k}{total number of predictors (k=0 for raw)}
 }
 \description{
 means and standard error of two groups to correlation coefficient
