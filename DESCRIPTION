@@ -1,0 +1,14 @@
+Package: michaela
+Title: convert statistical metrics for meta-analytic purpose
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "phoebe",
+           family = "lam",
+           role = c("aut", "cre"),
+           email = "phoebelam@u.northwestern.edu"),
+	person("jessica", "chiang", email = "jessica.chiang@georgetown.edu", role = "ctb"))
+Description: michaela is beta. please report any bugs. michaela converts various stats metrics to correlation coefficients using simplistic functions, always in the format of "from.to" e.g., odd ratio to r would be or.r, aimed to allow users with no r knowledge to use for meta-analytic purpose. given bivariate metrics, all michaela functions can estimate bivariate pearson's correlation. given adjusted metrics, some michaela functions can estimate the partial correlation coefficient. see package documentation (?michaela) for a list of functions and more detailed explanations.
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
