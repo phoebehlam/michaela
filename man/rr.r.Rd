@@ -9,9 +9,7 @@ rr.r(rr, prev, n1, n2)
 \arguments{
 \item{rr}{the risk ratio}
 
-\item{prev}{the prevalence of the outcome in the reference group: c/(c+d)\cr
-c = # of non-exposed cases\cr
-d = # of non-exposed non-cases}
+\item{prev}{the prevalence of the outcome in the reference group}
 
 \item{n1}{the cell size of group 1 (if unknown, leave blank, assumes correcting factor a = 4 where n1 = n2)}
 
@@ -19,11 +17,8 @@ d = # of non-exposed non-cases}
 }
 \description{
 risk ratio to correlation coefficient
-"true" risk ratios calculated from (a/(a+b))/(c/(c+d))\cr
-a = # of exposed cases\cr
-b = # of exposed non-cases\cr
-c = # of non-exposed cases\cr
-d = # of non-exposed non-cases
+use crosstab.rr() to calculate rr and use crosstab.prev() to calculate prevalence of the outcome in reference group
+then use the following to calculate rr to r
 }
 \examples{
 rr.r(4.05, 1.56, 10.51, 141, 8)

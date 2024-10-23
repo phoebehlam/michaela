@@ -420,19 +420,41 @@ expb.r <- function (b, cil, ciu, n, k) {
   return (r)
 }
 
+#' risk ratio computation from crosstab
+#' @param a # of exposed cases
+#' @param b # of exposed non-cases
+#' @param c # of non-exposed cases
+#' @param d # of non-exposed non-cases
+#' 
+#' @export
+crosstab.rr <- function(a, b, c, d) {
+  
+  rr = (a/(a+b))/(c/(c+d))
+  return (rr)
+  
+}
+
+#' computing prevalence of the outcome in the reference group
+#' @param c # of non-exposed cases
+#' @param d # of non-exposed non-cases
+#' 
+#' @export
+crosstab.prev <- function(c, d) {
+  
+  prev = c/(c+d)
+  return (prev)
+  
+}
+
+
 #' risk ratio to r
 #'
 #' risk ratio to correlation coefficient
-#' "true" risk ratios calculated from (a/(a+b))/(c/(c+d))\cr
-#' a = # of exposed cases\cr
-#' b = # of exposed non-cases\cr
-#' c = # of non-exposed cases\cr
-#' d = # of non-exposed non-cases
+#' use crosstab.rr() to calculate rr and use crosstab.prev() to calculate prevalence of the outcome in reference group
+#' then use the following to calculate rr to r
 #'
 #' @param rr the risk ratio
-#' @param prev the prevalence of the outcome in the reference group: c/(c+d)\cr
-#' c = # of non-exposed cases\cr
-#' d = # of non-exposed non-cases
+#' @param prev the prevalence of the outcome in the reference group
 #' @param n1 the cell size of group 1 (if unknown, leave blank, assumes correcting factor a = 4 where n1 = n2)
 #' @param n2 the cell size of group 2 (if unknown, leave blank, assumes correcting factor a = 4 where n1 = n2)
 #'
