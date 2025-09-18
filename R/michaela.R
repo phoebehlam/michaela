@@ -698,6 +698,69 @@ d.r <- function (d, n1, n2, dir) {
   return  (r)
 }
 
+
+#' d to g
+#'
+#' convert cohen's d to hedges' g\cr
+#' equation #4.22 inboreinstein et al., 2009 (introduction to meta-analysis)
+#'
+#' @param d cohen's d
+#' @param n total n (sum of the two groups)
+#'
+#' @examples d.g(.3, 68)
+#' @examples dat %>% mutate (g = d.g(cohensd, totaln)) -> dat
+#'
+#' @export
+d.g <- function (d, n) {
+  
+  j = 1- (3/(4*(n-2)-1))
+  g = j*d
+  return (g)
+}
+
+
+#' variance of d
+#'
+#' variance of cohen's d\cr
+#' equation #4.20 inboreinstein et al., 2009 (introduction to meta-analysis)
+#'
+#' @param d cohen's d
+#' @param n1 number of participants in group 1
+#' @param n2 number of participants in group 2
+#'
+#' @examples vard(.89, 24, 36)
+#'
+#' @export
+vard <- function (d, n1, n2) {
+  
+  vard = (n1+n2)/(n1*n2) + ((d^2)/(2*(n1+n2)))
+  
+  return (vard)
+}
+
+#' variance of g
+#'
+#' variance of hedges' g\cr
+#' equation #4.24 inboreinstein et al., 2009 (introduction to meta-analysis)
+#'
+#' @param d cohen's d
+#' @param n1 number of participants in group 1
+#' @param n2 number of participants in group 2
+#'
+#' @examples varg(.3, 68)
+#' @examples dat %>% mutate (g = d.g(cohensd, totaln)) -> dat
+#'
+#' @export
+varg <- function (d, n1, n2) {
+  
+  j = 1- (3/(4*(n1+n2-2)-1))
+  vard = vard(d, n1, n2)
+  
+  varg = j^2 * vard
+  
+  return (varg)
+}
+
 #' mean and sd to r
 #'
 #' means and standard deviations of two groups to correlation coefficient
