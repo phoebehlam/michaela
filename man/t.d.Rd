@@ -23,7 +23,7 @@ note: if your t-statistics is computed from taking the ratio of b and se, e.g., 
 independent t-statistics to cohen's d\cr
 }
 \examples{
-t.g(2.14, 20, 35, -1)
-dat \%>\% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
+t.d(2.14, 20, 35, -1)
+dat \%>\% mutate (d = t.d(t_stat, n1, n2, direction)) -> dat
 
 }

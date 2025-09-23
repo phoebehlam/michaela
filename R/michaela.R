@@ -364,8 +364,8 @@ bse.r <- function (b, se, n, k) {
 #' note: if your t-statistics is computed from taking the ratio of b and se, e.g., using bse.t(), then it should already have empirical direction "built-in" since b is directional itself, so simply enter dir = 1
 #'
 #' @examples
-#' t.g(2.14, 20, 35, -1)
-#' dat %>% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
+#' t.d(2.14, 20, 35, -1)
+#' dat %>% mutate (d = t.d(t_stat, n1, n2, direction)) -> dat
 #'
 #' @export
 t.d <- function (t, n1, n2, dir, k=1) {
