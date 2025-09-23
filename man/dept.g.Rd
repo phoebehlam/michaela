@@ -5,8 +5,6 @@
 \title{t to g}
 \usage{
 dept.g(t, n1, r, sdpre, sdpost, dir, k = 1)
-
-dept.g(t, n1, r, sdpre, sdpost, dir, k = 1)
 }
 \arguments{
 \item{t}{the paired-sample/dependent t-statistics}
@@ -27,14 +25,9 @@ note: if your t-statistics is computed from taking the ratio of b and se, e.g., 
 }
 \description{
 dependent (paired-samples) t-statistics to hedges' g\cr
-
-dependent (paired-samples) t-statistics to cohen's d\cr
 }
 \examples{
 dept.g(2.14, 20, 35, -1)
 dat \%>\% mutate (g = dept.g(t_stat, n1, n2, direction)) -> dat
-
-dept.d(2.14, 20, 35, -1)
-dat \%>\% mutate (d = dept.g(t_stat, n1, n2, direction)) -> dat
 
 }

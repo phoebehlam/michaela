@@ -477,47 +477,63 @@ indt.d <- function (t, n1, n2, dir, k=1) {
 }
 
 
-#' dependent t to d
+#' Dependent-samples t to Cohen's d
 #'
-#' dependent (paired-samples) t-statistics to cohen's d\cr
-#' 
-#' @param t the paired-sample/dependent t-statistics
-#' @param n number of participants
-#' @param r the correlation between the paired scores
-#' @param sdpre the standard deviation of the pre-test scores
-#' @param sdpost the standard deviation of the post-test scores
-#' @param dir empirical direction: +1 or -1. articles sometimes report t-statistics in absolute value, may be prudent to check when extracting stats\cr
-#' if the reported t-statistics is positive, read text to ensure it reflects a positive association, enter the t as is and enter dir = 1 if so\cr
-#' if the reported t-statistics is positive, but text suggests a negative association, enter the t as is and enter dir = -1\cr
-#' if the reported t-statistics is negative, you can simply enter the negative t-value and enter dir = 1\cr
-#' note: if your t-statistics is computed from taking the ratio of b and se, e.g., using bse.t(), then it should already have empirical direction "built-in" since b is directional itself, so simply enter dir = 1
+#' Convert a paired-samples t statistic into Cohen's d.
 #'
+#' @param t  t statistic from paired-samples test
+#' @param n  number of pairs (sample size)
+#' @param method  either "dz" (default; simple t/sqrt(n)) 
+#'   or "md" (Morris & DeShon, 2002 adjustment)
+#' @param sd_diff  (optional) SD of difference scores. 
+#'   Used if method = "md" and provided directly.
+#' @param sd_pre  (optional) SD of pre-scores. Required for method="md"
+#'   if sd_diff is not supplied.
+#' @param sd_post (optional) SD of post-scores. Required for method="md"
+#'   if sd_diff is not supplied.
+#' @param r  (optional) correlation between pre- and post-scores. Required 
+#'   for method="md" if sd_diff is not supplied.
+#'
+#' @return Cohen's d
 #' @examples
-#' dept.d(2.14, 20, 35, -1)
-#' dat %>% mutate (d = dept.g(t_stat, n1, n2, direction)) -> dat
+#' dept.d(t = 2.5, n = 30)  # simple dz
+#' dept.d(t = 2.5, n = 30, method = "md", sd_pre = 10, sd_post = 10, r = 0.7)
+#' dept.d(t = 2.5, n = 30, method = "md", sd_diff = 6)
 #'
 #' @export
-dept.g <- function (t, n1, r, sdpre, sdpost, dir, k=1) {
-  # if (missing(k)) {
-  #   stop ("hi, please specify k (the number of predictors); if t-test of two groups with no covariates, enter k = 1")
-  # } #k = 1 here instead of 0 for no covariates because df for 2-sampled t-test is (n1 - 1) + (n2 - 1) = total n - 2, so k - 1 will give n - 1 - 1
+dept.d <- function(t, n, method = c("dz", "md"),
+                   sd_diff = NULL, sd_pre = NULL, sd_post = NULL, r = NULL) {
   
-  sdpool = sqrt((sdpre^2 + sdpost^2)/2)
+  method <- match.arg(method)
   
-  if (missing (dir)) {
+  if (method == "dz") {
+    # Classic dependent-samples Cohen's d
+    d <- t / sqrt(n)
     
-    d = sign(t)*(t*(n1+n2)/sqrt(n1*n2*df))
-    
-  } else {
-    
-    d = sign(dir)*(t*(n1+n2)/sqrt(n1*n2*df))
-    
+  } else if (method == "md") {
+    # Morris & DeShon 2002 adjustment
+    if (!is.null(sd_diff)) {
+      # User supplied difference-score SD directly
+      # Need pooled SD as standardizer
+      if (is.null(sd_pre) || is.null(sd_post)) {
+        stop("For method='md' with sd_diff, you must also supply sd_pre and sd_post to compute pooled SD.")
+      }
+      s_pool <- sqrt((sd_pre^2 + sd_post^2) / 2)
+      d <- (t / sqrt(n)) * (sd_diff / s_pool)
+      
+    } else {
+      # Compute difference-score SD from pre, post, and r
+      if (is.null(sd_pre) || is.null(sd_post) || is.null(r)) {
+        stop("For method='md' without sd_diff, you must supply sd_pre, sd_post, and r.")
+      }
+      sd_diff <- sqrt(sd_pre^2 + sd_post^2 - 2 * r * sd_pre * sd_post)
+      s_pool <- sqrt((sd_pre^2 + sd_post^2) / 2)
+      d <- (t / sqrt(n)) * (sd_diff / s_pool)
+    }
   }
   
-  return (d)
+  return(d)
 }
-
-
 
 
 
