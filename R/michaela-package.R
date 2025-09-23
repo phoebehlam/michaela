@@ -45,6 +45,8 @@
 #' geo.r(): geometric means and cis to r\cr
 #' d.t(): cohen's d to t-statistics\cr
 #' d.r(): cohen's d to r \cr
+#' t.d(): t-statistics to d \cr
+#' t.g(): t-statistics to g \cr
 #' median.r(): medians, minimums, and maximums to r
 #'
 #' @section dichotomized/extreme group designs:
