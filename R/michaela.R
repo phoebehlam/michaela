@@ -407,7 +407,7 @@ t.d <- function (t, n1, n2, dir, k=1) {
 #' dat %>% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
 #'
 #' @export
-t.g <- function (t, n1, n2, dir, k=1) {
+indt.g <- function (t, n1, n2, dir, k=1) {
   # if (missing(k)) {
   #   stop ("hi, please specify k (the number of predictors); if t-test of two groups with no covariates, enter k = 1")
   # } #k = 1 here instead of 0 for no covariates because df for 2-sampled t-test is (n1 - 1) + (n2 - 1) = total n - 2, so k - 1 will give n - 1 - 1
@@ -450,7 +450,7 @@ t.g <- function (t, n1, n2, dir, k=1) {
 #' dat %>% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
 #'
 #' @export
-t.g <- function (t, n1, r, sdpre, sdpost, dir, k=1) {
+dept.g <- function (t, n1, r, sdpre, sdpost, dir, k=1) {
   # if (missing(k)) {
   #   stop ("hi, please specify k (the number of predictors); if t-test of two groups with no covariates, enter k = 1")
   # } #k = 1 here instead of 0 for no covariates because df for 2-sampled t-test is (n1 - 1) + (n2 - 1) = total n - 2, so k - 1 will give n - 1 - 1
