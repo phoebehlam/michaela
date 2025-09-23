@@ -24,6 +24,6 @@ independent t-statistics to hedges' g\cr
 }
 \examples{
 t.g(2.14, 20, 35, -1)
-dat \%>\% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
+dat \%>\% mutate (g = indt.g(t_stat, n1, n2, direction)) -> dat
 
 }
