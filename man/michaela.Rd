@@ -54,8 +54,8 @@ geo.d(): geometric means and cis to cohen's d\cr
 geo.r(): geometric means and cis to r\cr
 d.t(): cohen's d to t-statistics\cr
 d.r(): cohen's d to r \cr
-t.d(): t-statistics to d \cr
-t.g(): t-statistics to g \cr
+indt.d(): independent t-statistics to d \cr
+dept.d(): dependent t-statistics to d \cr
 median.r(): medians, minimums, and maximums to r
 }
 
