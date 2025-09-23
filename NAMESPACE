@@ -3,6 +3,8 @@
 S3method(median,mean)
 S3method(median,r)
 S3method(median,sd)
+S3method(t,d)
+S3method(t,g)
 S3method(t,r)
 export(bci.r)
 export(bse.r)

@@ -349,6 +349,130 @@ bse.r <- function (b, se, n, k) {
   return (r)
 }
 
+
+#' t to d
+#'
+#' independent t-statistics to cohen's d\cr
+#' 
+#' @param t the independent t-statistics
+#' @param n1 group 1 sample size
+#' @param n2 group 2 sample size
+#' @param dir empirical direction: +1 or -1. articles sometimes report t-statistics in absolute value, may be prudent to check when extracting stats\cr
+#' if the reported t-statistics is positive, read text to ensure it reflects a positive association, enter the t as is and enter dir = 1 if so\cr
+#' if the reported t-statistics is positive, but text suggests a negative association, enter the t as is and enter dir = -1\cr
+#' if the reported t-statistics is negative, you can simply enter the negative t-value and enter dir = 1\cr
+#' note: if your t-statistics is computed from taking the ratio of b and se, e.g., using bse.t(), then it should already have empirical direction "built-in" since b is directional itself, so simply enter dir = 1
+#'
+#' @examples
+#' t.g(2.14, 20, 35, -1)
+#' dat %>% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
+#'
+#' @export
+t.d <- function (t, n1, n2, dir, k=1) {
+  # if (missing(k)) {
+  #   stop ("hi, please specify k (the number of predictors); if t-test of two groups with no covariates, enter k = 1")
+  # } #k = 1 here instead of 0 for no covariates because df for 2-sampled t-test is (n1 - 1) + (n2 - 1) = total n - 2, so k - 1 will give n - 1 - 1
+  
+  df = n1+n2-2
+  
+  if (missing (dir)) {
+    
+    d = sign(t)*(t*(n1+n2)/sqrt(n1*n2*df))
+    
+  } else {
+    
+    d = sign(dir)*(t*(n1+n2)/sqrt(n1*n2*df))
+    
+  }
+  
+  return (d)
+}
+
+
+#' t to g
+#'
+#' independent t-statistics to hedges' g\cr
+#' 
+#' @param t the independent t-statistics
+#' @param n1 group 1 sample size
+#' @param n2 group 2 sample size
+#' @param dir empirical direction: +1 or -1. articles sometimes report t-statistics in absolute value, may be prudent to check when extracting stats\cr
+#' if the reported t-statistics is positive, read text to ensure it reflects a positive association, enter the t as is and enter dir = 1 if so\cr
+#' if the reported t-statistics is positive, but text suggests a negative association, enter the t as is and enter dir = -1\cr
+#' if the reported t-statistics is negative, you can simply enter the negative t-value and enter dir = 1\cr
+#' note: if your t-statistics is computed from taking the ratio of b and se, e.g., using bse.t(), then it should already have empirical direction "built-in" since b is directional itself, so simply enter dir = 1
+#'
+#' @examples
+#' t.g(2.14, 20, 35, -1)
+#' dat %>% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
+#'
+#' @export
+t.g <- function (t, n1, n2, dir, k=1) {
+  # if (missing(k)) {
+  #   stop ("hi, please specify k (the number of predictors); if t-test of two groups with no covariates, enter k = 1")
+  # } #k = 1 here instead of 0 for no covariates because df for 2-sampled t-test is (n1 - 1) + (n2 - 1) = total n - 2, so k - 1 will give n - 1 - 1
+  
+  df = n1+n2-2
+  
+  if (missing (dir)) {
+    
+    d = sign(t)*(t*(n1+n2)/sqrt(n1*n2*df))
+    
+  } else {
+    
+    d = sign(dir)*(t*(n1+n2)/sqrt(n1*n2*df))
+    
+  }
+  
+  g = d.g(d, n1+n2)
+  
+  return (g)
+}
+
+
+#' t to g
+#'
+#' dependent (paired-samples) t-statistics to hedges' g\cr
+#' 
+#' @param t the paired-sample/dependent t-statistics
+#' @param n number of participants
+#' @param r the correlation between the paired scores
+#' @param sdpre the standard deviation of the pre-test scores
+#' @param sdpost the standard deviation of the post-test scores
+#' @param dir empirical direction: +1 or -1. articles sometimes report t-statistics in absolute value, may be prudent to check when extracting stats\cr
+#' if the reported t-statistics is positive, read text to ensure it reflects a positive association, enter the t as is and enter dir = 1 if so\cr
+#' if the reported t-statistics is positive, but text suggests a negative association, enter the t as is and enter dir = -1\cr
+#' if the reported t-statistics is negative, you can simply enter the negative t-value and enter dir = 1\cr
+#' note: if your t-statistics is computed from taking the ratio of b and se, e.g., using bse.t(), then it should already have empirical direction "built-in" since b is directional itself, so simply enter dir = 1
+#'
+#' @examples
+#' dept.g(2.14, 20, 35, -1)
+#' dat %>% mutate (g = t.g(t_stat, n1, n2, direction)) -> dat
+#'
+#' @export
+t.g <- function (t, n1, r, sdpre, sdpost, dir, k=1) {
+  # if (missing(k)) {
+  #   stop ("hi, please specify k (the number of predictors); if t-test of two groups with no covariates, enter k = 1")
+  # } #k = 1 here instead of 0 for no covariates because df for 2-sampled t-test is (n1 - 1) + (n2 - 1) = total n - 2, so k - 1 will give n - 1 - 1
+  
+  sdpool = sqrt((sdpre^2 + sdpost^2)/2)
+  
+  if (missing (dir)) {
+    
+    d = sign(t)*(t*(n1+n2)/sqrt(n1*n2*df))
+    
+  } else {
+    
+    d = sign(dir)*(t*(n1+n2)/sqrt(n1*n2*df))
+    
+  }
+  
+  g = d.g(d, n1+n2)
+  
+  return (g)
+}
+
+
 #' b and ci to r
 #'
 #' regression coefficient and confidence interval to correlation coefficient: b and ci -> t -> r\cr
