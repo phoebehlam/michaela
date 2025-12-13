@@ -697,6 +697,7 @@ percent.r <- function (percent, cil, ciu, n, k, result = c("cil", "ciu", "avg"))
   se_ciu = suppressWarnings(ci.se (b, cil2, ciu2, n, k, result = "ciu"))
   se_cil = suppressWarnings(ci.se (b, cil2, ciu2, n, k, result = "cil"))
   se_avg = suppressWarnings(ci.se (b, cil2, ciu2, n, k, result = "avg"))
+  
 
   if(missing(result)) {
     r = bse.r (b, se_ciu, n, k)
