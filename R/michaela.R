@@ -1325,6 +1325,52 @@ geo.d <- function (m1, m2, cil1, ciu1, cil2, ciu2, n1, n2, k, result = c("sediff
 }
 
 
+#' paired groups mean and sd to d (based on Comprehensive Meta-analysis Software)
+#'
+#' means and standard deviations of paired groups to cohen's d
+#'
+#' @param m1 mean of condition 1
+#' @param m2 mean of condition 2
+#' @param sd1 standard deviation of condition 1
+#' @param sd2 standard deviation of condition 2
+#' @param r pearson's r between the two conditions
+#' @param totn total n
+#'
+#' @examples
+#' pairmeansd.d(31.490, 24.630, 9.120, 10.220, .745, 41)
+#'
+#' @export
+pairmeansd.d <- function(m1, m2, sd1, sd2, r, totn) {
+  
+  diff = (m1 - m2)
+  diff_sd = sqrt(sd1 ^ 2 + sd2 ^ 2 - 2 * r * sd1 * sd2)
+  
+  d = diff /  (diff_sd / sqrt(2 * (1 - r)))
+  
+  return(d)
+  
+}
+
+
+#' paired groups (difference, SD) (based on Comprehensive Meta-analysis Software)
+#'
+#' mean difference scores and SD of difference scores --> cohen's d
+#'
+#' @param diff mean difference
+#' @param sd_diff sd of difference scores
+#' @param r pearson's r between the two conditions
+#' @param totn total n
+#' @examples
+#' pairdiffsd.d (6, 12.430, .7, 86)
+#' @export
+pairdiffsd.d <- function(diff, sd_diff, r, totn) {
+  
+  d = diff /  (sd_diff / sqrt(2 * (1 - r)))
+  
+  return(d)
+  
+}
+
 
 
 
