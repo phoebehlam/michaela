@@ -1372,6 +1372,49 @@ pairdiffsd.d <- function(diff, sd_diff, r, totn) {
 }
 
 
+#' Paired groups (means, t) (based on Comprehensive Meta-analysis Software)
+#'
+#' t-statistics --> cohen's d with means to ascertain empirical direction
+#' direction is based on m1 minus m2 
+#'
+#' @param t pairwise t-statistics
+#' @param m1 mean 1
+#' @param m2 mean 2
+#' @param r pearson's r between the two conditions
+#' @param totn total n
+#' @examples
+#' pairmeanst.d(5.788, 2, 1, .5, 115)
+#' @export
+pairmeanst.d <- function(t, m1, m2, r, totn) {
+  
+  diff = t/sqrt(totn)
+  d = diff * sqrt(2 * (1 - r)) * (m1-m2)
+  
+  return(d)
+  
+}
+
+
+
+#' Paired groups (N, t) (based on Comprehensive Meta-analysis Software)
+#'
+#' t-statistics --> cohen's d
+#'
+#' @param t pairwise t-statistics
+#' @param r pearson's r between the two conditions
+#' @param totn total n
+#' @param dir empirical direction of the effect (+1 or -1)
+#' @examples
+#' pairt.d(3.270, .5, 36, 1)
+#' @export
+pairt.d <- function(t, r, totn, dir) {
+  
+  diff = t/sqrt(totn)
+  d = diff * sqrt(2 * (1 - r)) * dir
+  
+  return(d)
+  
+}
 
 
 
