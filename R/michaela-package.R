@@ -82,6 +82,5 @@
 #'\item\href{https://www.semanticscholar.org/paper/Synthesizing-bivariate-and-partial-effect-sizes-Aloe-Tanner-Smith/aee589e75229f314cad5ba8647c9756814ca9e97}{aloe, a. m., tanner‐smith, e. e., becker, b. j., & wilson, d. b. (2016). synthesizing bivariate and partial effect sizes. campbell systematic reviews, 12(1), 1-9.}
 #'\item\href{https://projecteuclid.org/euclid.ss/1199285041}{becker, b. j., & wu, m. j. (2007). the synthesis of regression slopes in meta-analysis. statistical science, 22(3), 414-429.}
 #'}
-#' @docType package
-#' @name michaela
-NULL
+#' @keywords internal
+"_PACKAGE"
