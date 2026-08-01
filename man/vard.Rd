@@ -2,7 +2,7 @@
 % Please edit documentation in R/michaela.R
 \name{vard}
 \alias{vard}
-\title{variance of d}
+\title{variance of d (independent samples)}
 \usage{
 vard(d, n1, n2)
 }

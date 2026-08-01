@@ -890,27 +890,38 @@ d.r <- function (d, n1, n2, dir) {
 }
 
 
-#' d to g
+#' d to g 
 #'
 #' convert cohen's d to hedges' g\cr
-#' equation #4.22 inboreinstein et al., 2009 (introduction to meta-analysis)
+#' Equation 4.22 in Borenstein et al. (2009), Introduction to Meta-Analysis.
 #'
 #' @param d cohen's d
-#' @param n total n (sum of the two groups)
+#' @param totn sample size (sum of two independent groups or total number of paired samples)
+#' @param type type of cohen's d: independent or paired-sample
 #'
-#' @examples d.g(.3, 68)
-#' @examples dat %>% mutate (g = d.g(cohensd, totaln)) -> dat
+#' @examples
+#' d.g(.30, 68, type = "independent")
+#' d.g(.30, 68, type = "paired")
 #'
 #' @export
-d.g <- function (d, n) {
+d.g <- function(d, n, type = c("independent", "paired")) {
   
-  j = 1- (3/(4*(n-2)-1))
-  g = j*d
-  return (g)
+  type <- match.arg(type)
+  
+  if (type == "independent") {
+    df <- n - 2
+  } else {
+    df <- n - 1
+  }
+  
+  j <- 1 - (3 / (4 * df - 1))
+  g <- j * d
+  
+  return(g)
 }
 
 
-#' variance of d
+#' variance of d (independent samples)
 #'
 #' variance of cohen's d\cr
 #' equation #4.20 inboreinstein et al., 2009 (introduction to meta-analysis)
@@ -927,6 +938,26 @@ vard <- function (d, n1, n2) {
   vard = (n1+n2)/(n1*n2) + ((d^2)/(2*(n1+n2)))
   
   return (vard)
+}
+
+
+#' variance of d (paired-samples)
+#'
+#' variance of cohen's d\cr
+#' based on comprehensive meta-analysis software
+#'
+#' @param d cohen's d
+#' @param r pearson's r between the paired measurements
+#' @param totn sample size (number of paired observations)
+#'
+#' @examples pairvard(.89, .70, 36)
+#'
+#' @export
+pairvard <- function (d, r, totn) {
+
+  pair_vard = (1 / totn + d ^ 2 / (2 * totn)) * (2 * (1 - r))
+  
+  return (pair_vard)
 }
 
 #' variance of g
@@ -951,6 +982,30 @@ varg <- function (d, n1, n2) {
   
   return (varg)
 }
+
+
+#' variance of g (paired-sample d)
+#'
+#' variance of hedges' g\cr
+#' based on comprehensive meta-analysis software
+#'
+#' @param d cohen's d
+#' @param totn sample size (total number of paired observations)
+#'
+#' @examples pairvarg(.3, .7, 68)
+#'
+#' @export
+pairvarg <- function (d, r, totn) {
+  
+  df = totn -1
+  j = 1- (3/(4*df-1))
+  pair_vard = pairvard(d, r, totn)
+  
+  pair_varg = j^2 * pair_vard
+  
+  return (pair_varg)
+}
+
 
 #' mean and sd to r
 #'

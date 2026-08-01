@@ -4,19 +4,21 @@
 \alias{d.g}
 \title{d to g}
 \usage{
-d.g(d, n)
+d.g(d, n, type = c("independent", "paired"))
 }
 \arguments{
 \item{d}{cohen's d}
 
-\item{n}{total n (sum of the two groups)}
+\item{type}{type of cohen's d: independent or paired-sample}
+
+\item{totn}{sample size (sum of two independent groups or total number of paired samples)}
 }
 \description{
 convert cohen's d to hedges' g\cr
-equation #4.22 inboreinstein et al., 2009 (introduction to meta-analysis)
+Equation 4.22 in Borenstein et al. (2009), Introduction to Meta-Analysis.
 }
 \examples{
-d.g(.3, 68)
-dat \%>\% mutate (g = d.g(cohensd, totaln)) -> dat
+d.g(.30, 68, type = "independent")
+d.g(.30, 68, type = "paired")
 
 }
