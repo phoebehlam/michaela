@@ -170,26 +170,38 @@ or.r <- function (or, n1, n2) {
 #' \item"avg" will compute se from both ciu and cil and take the average
 #' \item"diff" will give the difference between the se computed using ciu and using cil. for transformed point estimate, see sediff() function.
 #' }
+#' @param use_z this is a logical T or F. If T, uses critical Z = 1.96 to compute SE; if F, then uses n and k to compute df
 #'
 #' @examples
 #' # e.g., regression b=.156, 95CI [.10, .225], n=166, 3 total predictors
 #' ci.se(.156, .10, .225, 166, 3)
 #'
 #' @export
-ci.se <- function (est, cil, ciu, n, k, result = c("ciu", "cil", "avg", "diff", "marge")) {
+ci.se <- function (est, cil, ciu, n, k, result = c("ciu", "cil", "avg", "diff", "marge"), use_z = FALSE) {
 
-  if (missing(k)) {
-    stop ("hi, please specify k (the number of predictors); if determining se for raw means, enter k = 0.")
-  } #raw means would enter k = 0 that way df would be n - 1
-
-  df = n - k - 1
-  qt <- qt (.025, df, lower.tail = FALSE)
-  se_ciu = (ciu - est)/qt
-  se_cil = (cil - est)/-qt
-  se_marge = (ciu - cil)/(2 * qt)
-  diff = abs(se_ciu - se_cil)
-
+  if (use_z) {
+    crit <- qnorm(.025, lower.tail = FALSE)   # 1.959964
+  } else {
+    if (missing(k)) {
+      stop ("hi, please specify k (the number of predictors); if determining se for raw means, enter k = 0. (or set use_z = TRUE if the source used a Wald/z interval)")
+    } #raw means would enter k = 0 that way df would be n - 1
+    if (missing(n)) {
+      stop ("hi, please specify n; needed for df when use_z = FALSE.")
+    }
+    df <- n - k - 1
+    if (any(df <= 0, na.rm = TRUE)) {
+      stop ("hi, df = n - k - 1 came out <= 0; check n and k.")
+    }
+    crit <- qt (.025, df, lower.tail = FALSE)
+  }
+  
+  se_ciu   = (ciu - est)/crit
+  se_cil   = (cil - est)/-crit
+  se_marge = (ciu - cil)/(2 * crit)
+  diff     = abs(se_ciu - se_cil)
+  
   warning ("hi! please also use sediff() or result = 'diff' in this function to check discrepancies using se computed from upper vs. lower ci")
+  
   if (missing (result)) {
     return (se_marge)
   } else if (result == "ciu"){
@@ -199,12 +211,13 @@ ci.se <- function (est, cil, ciu, n, k, result = c("ciu", "cil", "avg", "diff", 
   } else if (result == "avg"){
     avg = (se_ciu + se_cil)/2
     return (avg)
-    } else if (result == 'marge'){
-      return(se_marge)
-    } else if (result == "diff") {
+  } else if (result == 'marge'){
+    return(se_marge)
+  } else if (result == "diff") {
     return(diff)
   }
 }
+
 
 #' differences in computed se
 #'
@@ -595,7 +608,7 @@ bci.r <- function (b, cil, ciu, n, k, result = c("cil", "ciu", "avg", 'marge')) 
 #' dat %>% mutate (r_from_expbci = expb.r(expb_coef, expb_lowerci, expb_upperci, expb_n, expb_predictors)) -> dat
 #'
 #' @export
-expb.r <- function (b, cil, ciu, n, k) {
+expb.r <- function (b, cil, ciu, n, k, use_z = F) {
   if (missing(k)) {
     stop ('hi, please specify k (the number of predictors)')
   }
@@ -603,8 +616,13 @@ expb.r <- function (b, cil, ciu, n, k) {
   lnb = log (b)
   lncil = log (cil)
   lnciu = log (ciu)
+  
+  if(use_z == F){
+      se = ci.se (lnb, lncil, lnciu, n, k, use_z = F)
+  } else {
+    se = ci.se (lnb, lncil, lnciu, n, k, use_z = T)
+  }
 
-  se = ci.se (lnb, lncil, lnciu, n, k)
   r = bse.r (lnb, se, n, k)
 
   return (r)
@@ -1472,4 +1490,90 @@ pairt.d <- function(t, r, totn, dir) {
 }
 
 
+#' frequency to odds ratio
+#'
+#' @param a exposed, outcome
+#' @param b exposed, no outcome
+#' @param c unexposed, outcome
+#' @param d unexposed, no outcome
+#' @export
+freq.or <- function(a, b, c, d) {
+  
+  if (any(c(a, b, c, d) %% 1 != 0, na.rm = TRUE)) {
+    warning ("hi! non-integer cells detected.")
+  }
+  
+  or <- (a * d) / (b * c)
+  
+  return(or)
+  
+}
 
+
+#' variance of log OR
+#'
+#' @param a exposed, outcome
+#' @param b exposed, no outcome
+#' @param c unexposed, outcome
+#' @param d unexposed, no outcome
+#'
+#' @export
+freq.varlogor <- function(a, b, c, d, result = c('se', 'var')) {
+  
+  if (any(c(a, b, c, d) %% 1 != 0, na.rm = TRUE)) {
+    warning ("hi! non-integer cells detected.")
+  }
+  
+  var <- 1/a + 1/b + 1/c + 1/d
+  se <- sqrt(var) 
+  
+  if(result == 'se'){
+    return(se)
+  } else if (result == 'var'){
+    return(var) 
+  }
+  
+}
+
+
+#' linear probability model coefficient to odds ratio
+#'
+#' @param b linear probability model coefficient (proportion scale)
+#' @param p0 baseline prevalence in the reference group (proportion)
+#' @param delta contrast width; 1 for a categorical contrast
+#' @export
+lpm.or <- function(b, p0, delta = 1) {
+  
+  p1 <- p0 + b * delta
+  
+  if (any(p1 <= 0 | p1 >= 1, na.rm = TRUE)) {
+    warning ("hi! p1 fell outside (0,1) for some rows - the LPM is extrapolating, those will be NaN.")
+  }
+  
+  or <- (p1 / (1 - p1)) / (p0 / (1 - p0))
+  
+  return(or)
+  
+}
+
+
+#' variance of the log odds ratio from a linear probability model coefficient
+#'
+#' @param b linear probability model coefficient (proportion scale)
+#' @param se_b standard error of b, same scale
+#' @param p0 baseline prevalence in the reference group (proportion)
+#' @param delta contrast width; 1 for a categorical contrast
+#' @export
+lpm.var <- function(b, se_b, p0, delta = 1, results = c('se', 'var')) {
+  
+  p1  <- p0 + b * delta
+  var <- (se_b * delta / (p1 * (1 - p1)))^2
+  se <- sqrt(var)
+  
+  if(results == 'se'){
+    return(se)
+  } else if (results == 'var') {
+    return(var)
+  }
+  
+}
