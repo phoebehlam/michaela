@@ -4,7 +4,15 @@
 \alias{ci.se}
 \title{ci to se}
 \usage{
-ci.se(est, cil, ciu, n, k, result = c("ciu", "cil", "avg", "diff", "marge"))
+ci.se(
+  est,
+  cil,
+  ciu,
+  n,
+  k,
+  result = c("ciu", "cil", "avg", "diff", "marge"),
+  use_z = FALSE
+)
 }
 \arguments{
 \item{est}{the point estimate (e.g., a regression coefficient, a mean)}
@@ -23,6 +31,8 @@ ci.se(est, cil, ciu, n, k, result = c("ciu", "cil", "avg", "diff", "marge"))
 \item"avg" will compute se from both ciu and cil and take the average
 \item"diff" will give the difference between the se computed using ciu and using cil. for transformed point estimate, see sediff() function.
 }}
+
+\item{use_z}{this is a logical T or F. If T, uses critical Z = 1.96 to compute SE; if F, then uses n and k to compute df}
 }
 \description{
 compute standard error from confidence interval\cr
