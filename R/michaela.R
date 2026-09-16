@@ -242,49 +242,55 @@ ci.se <- function (est, cil, ciu, n, k, result = c("ciu", "cil", "avg", "diff", 
 #' se.diff(4.05, 1.56, 10.51, 141, 8, "exp b")
 #'
 #' @export
-sediff <- function (est, cil, ciu, n, k, type = c("reg", "exp b", "geo", "percent")) {
-  if (missing(k)) {
-    stop ("hi, please specify k (the number of predictors); if determining se for raw means enter 0.")
-  }
-
+sediff <- function (est, cil, ciu, n, k, type = c("reg", "exp b", "geo", "percent"), use_z = FALSE) {
   if (missing(type)) {
     stop ('hi, please specify type-- options are "reg" (regression), "exp b" (exponentiated regression b), "geo" (geometric means), or "percent"(percent change from transformed exponentiated b)')
   }
-
-  df = n - k - 1
-  qt <- qt (.025, df, lower.tail = FALSE)
-
+  
+  if (use_z == TRUE) {
+    crit <- qnorm (.025, lower.tail = FALSE)
+  }
+  else {
+    if (missing(k)) {
+      stop ("hi, please specify k (the number of predictors); if determining se for raw means enter 0. Or set use_z = TRUE.")
+    }
+    if (missing(n)) {
+      stop ("hi, please specify n, or set use_z = TRUE.")
+    }
+    df = n - k - 1
+    crit <- qt (.025, df, lower.tail = FALSE)
+  }
+  
   if (type == "reg") {
-    se_ciu = (ciu - est)/qt
-    se_cil = (cil - est)/-qt
+    se_ciu = (ciu - est)/crit
+    se_cil = (cil - est)/-crit
   }
   else if (type == "exp b") {
     lnb = log (est)
     lncil = log (cil)
     lnciu = log (ciu)
-
-    se_ciu = (lnciu - lnb)/qt
-    se_cil = (lncil - lnb)/-qt
+    
+    se_ciu = (lnciu - lnb)/crit
+    se_cil = (lncil - lnb)/-crit
   }
   else if (type == "geo") {
     lnb = log (est)
     lncil = log (cil)
     lnciu = log (ciu)
-
-    se_ciu = (lnciu - lnb)/qt
-    se_cil = (lncil - lnb)/-qt
+    
+    se_ciu = (lnciu - lnb)/crit
+    se_cil = (lncil - lnb)/-crit
   }
   else if (type == "percent") {
     b = log (est/100 + 1)
     cil2 = log (cil/100 + 1)
     ciu2 = log (ciu/100 + 1)
-
-    se_ciu = (ciu2 - b)/qt
-    se_cil = (cil2 - b)/-qt
+    
+    se_ciu = (ciu2 - b)/crit
+    se_cil = (cil2 - b)/-crit
   }
   diff = abs(se_ciu - se_cil)
   return (diff)
-  print (diff)
 }
 
 #' b and se to t
@@ -1456,12 +1462,12 @@ pairdiffsd.d <- function(diff, sd_diff, r, totn) {
 #' @param r pearson's r between the two conditions
 #' @param totn total n
 #' @examples
-#' pairmeanst.d(5.788, 2, 1, .5, 115)
+#' pairmeanst.d(5.788, 10, 9, .5, 115)
 #' @export
 pairmeanst.d <- function(t, m1, m2, r, totn) {
   
   diff = t/sqrt(totn)
-  d = diff * sqrt(2 * (1 - r)) * (m1-m2)
+  d = diff * sqrt(2 * (1 - r)) * sign(m1-m2)
   
   return(d)
   
@@ -1501,7 +1507,7 @@ freq.or <- function(a, b, c, d) {
   
   if (any(c(a, b, c, d) %% 1 != 0, na.rm = TRUE)) {
     warning ("hi! non-integer cells detected.")
-  }
+  } 
   
   or <- (a * d) / (b * c)
   
