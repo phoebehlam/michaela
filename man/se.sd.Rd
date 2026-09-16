@@ -4,7 +4,7 @@
 \alias{se.sd}
 \title{se to sd}
 \usage{
-se.sd(se, n)
+\method{se}{sd}(se, n)
 }
 \arguments{
 \item{se}{standard error}

@@ -4,7 +4,15 @@
 \alias{sediff}
 \title{differences in computed se}
 \usage{
-sediff(est, cil, ciu, n, k, type = c("reg", "exp b", "geo", "percent"))
+sediff(
+  est,
+  cil,
+  ciu,
+  n,
+  k,
+  type = c("reg", "exp b", "geo", "percent"),
+  use_z = FALSE
+)
 }
 \arguments{
 \item{est}{the point estimate (e.g., a regression coefficient, a mean)}

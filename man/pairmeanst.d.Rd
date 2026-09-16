@@ -22,5 +22,5 @@ t-statistics --> cohen's d with means to ascertain empirical direction
 direction is based on m1 minus m2
 }
 \examples{
-pairmeanst.d(5.788, 2, 1, .5, 115)
+pairmeanst.d(5.788, 10, 9, .5, 115)
 }
